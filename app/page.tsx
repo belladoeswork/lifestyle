@@ -8,6 +8,7 @@ import { Brain } from "lucide-react";
 import { useState, useEffect } from 'react';
 import { useUser } from "@clerk/nextjs";
 
+export const dynamic = "force-dynamic";
 
 const modules = [
   {
@@ -42,7 +43,7 @@ const modules = [
 
 export default function Home()  {
 
-  const { user, isSignedIn, isLoaded } = useUser();
+  const {isSignedIn, isLoaded } = useUser();
   const [showWelcome, setShowWelcome] = useState(false);
   const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -111,8 +112,12 @@ export default function Home()  {
             module={currentModule.name}
             moduleIcon={currentModule.icon}
             title={currentPage.title}
-            subtitle={currentPage.subtitle}
-            content={currentPage.content}
+            subtitle={Array.isArray(currentPage.subtitle) ? currentPage.subtitle.join(' ') : currentPage.subtitle}
+
+            // subtitle={currentPage.subtitle}
+            // content={currentPage.content}
+            content={Array.isArray(currentPage.content) ? currentPage.content.join(' ') : currentPage.content}
+
             showWelcome={showWelcome}
             setShowWelcome={setShowWelcome}
             onNextPage={handleNextPage}

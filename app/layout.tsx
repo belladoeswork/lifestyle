@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "./globals.css";
-import { ClerkProvider, SignedOut, SignedIn, UserButton } from '@clerk/nextjs';
+import { ClerkProvider, SignedOut, SignedIn } from '@clerk/nextjs';
 
 
 // const lexendDeca = Lexend_Deca({ 
