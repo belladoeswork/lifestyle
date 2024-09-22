@@ -1,101 +1,131 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+// import Image from "next/image";
+import './globals.css';
+import ModulePage from './modules/ModulePage';
+import { SignIn } from "@clerk/nextjs";
+import { Brain } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useUser } from "@clerk/nextjs";
+
+
+const modules = [
+  {
+    name: "Distanced Self-Talk",
+    icon: <Brain className="h-6 w-6" />,
+    pages: [
+      {
+        title: "How changing your perspective in self-talk can improve your mental health.",
+        subtitle: "#mental health",
+        content: ["Self-talk is your inner dialogue - the ongoing mental narrative you have with yourself throughout the day, reflecting your thoughts and beliefs.", "And by using a simple trick in your inner dialouge you can improve your mental health."," Research shows that using third-person self-talk can reduce anxiety and improve emotional regulation."]
+
+        // "
+      },
+      {
+        title: "The two ways of applying self Distanced Talk",
+        subtitle: ["1. Visual self-distancing"," 2. Linguistic self-distancing"],
+        content:[ " Visual self-distancing involves mentally viewing situations from an outside perspective, while linguistic self-distancing uses third-person language.","Both methods create psychological distance, allowing for more objective analysis of your thoughts and emotions."]
+      },
+      {
+        title: "Exercise: Visual self-distancing",
+        subtitle: "Recall a recent conflict. ",
+        content: "Imagine floating above the scene, observing yourself and others involved. Notice details you might have missed in the moment and consider alternative viewpoints."
+      },
+      {
+        title: "Exercise: Linguistic self-distancing",
+        subtitle: "Next time you face a challenge, ask yourself advice using your name:",
+        content: " {{userName}}, what are three possible solutions to this problem?Notice how this shifts your perspective and potentially reduces emotional charge."
+      }
+    ]
+  }
+];
+
+export default function Home()  {
+
+  const { user, isSignedIn, isLoaded } = useUser();
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [showModuleCompleted, setShowModuleCompleted] = useState(false);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      setShowWelcome(true);
+    }
+  }, [isSignedIn]);
+  useEffect(() => {
+    // Check if we've reached the last page of the current module
+    if (currentPageIndex === modules[currentModuleIndex].pages.length - 1) {
+      setShowModuleCompleted(true);
+    } else {
+      setShowModuleCompleted(false);
+    }
+  }, [currentPageIndex, currentModuleIndex]);
+
+
+  const currentModule = modules[currentModuleIndex];
+  const currentPage = currentModule.pages[currentPageIndex];
+
+
+  const progress = ((currentPageIndex + 1) / currentModule.pages.length) * 100;
+
+
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  const handleNextPage = () => {
+    if (currentPageIndex < currentModule.pages.length - 1) {
+      setCurrentPageIndex(currentPageIndex + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPageIndex > 0) {
+      setCurrentPageIndex(currentPageIndex - 1);
+    }
+  };
+
+  const handleNextModule = () => {
+    if (currentModuleIndex < modules.length - 1) {
+      setCurrentModuleIndex(currentModuleIndex + 1);
+      setCurrentPageIndex(0);
+      setShowModuleCompleted(false);
+    }
+  };
+
+  const isFirstPage = currentPageIndex === 0;
+  const isLastPage = currentPageIndex === currentModule.pages.length - 1;
+  const isLastModule = currentModuleIndex === modules.length - 1;
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <main className="min-h-screen w-full">
+      {!isSignedIn ? (
+        <div className="flex items-center justify-center h-screen">
+          <SignIn routing="hash" />
+          </div>
+          
+          ) : (
+        <ModulePage
+            module={currentModule.name}
+            moduleIcon={currentModule.icon}
+            title={currentPage.title}
+            subtitle={currentPage.subtitle}
+            content={currentPage.content}
+            showWelcome={showWelcome}
+            setShowWelcome={setShowWelcome}
+            onNextPage={handleNextPage}
+            isLastPage={isLastPage}
+            onPreviousPage={handlePreviousPage}
+          isFirstPage={isFirstPage}
+            progress={progress}
+          showModuleCompleted={showModuleCompleted}
+          onNextModule={handleNextModule}
+            isLastModule={isLastModule}
+        
+        />)
+      }
+    </main>
   );
 }
