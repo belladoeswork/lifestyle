@@ -14,7 +14,7 @@ interface ModulePageProps {
   moduleIcon: React.ReactNode;
   title: string;
   subtitle: string;
-  content: string;
+  // content: string;
   showWelcome: boolean;
   setShowWelcome: (show: boolean) => void;
   onNextPage: () => void;
@@ -27,6 +27,7 @@ interface ModulePageProps {
   isLastModule: boolean;
   onStartOver: () => void;
   username: string;
+  content: string | React.ReactNode;
 
 }
 
@@ -142,7 +143,7 @@ interface ModulePageProps {
   )}
           {/* <p className="text-muted-foreground">{subtitle}</p> */}
         </CardHeader>
-        <CardContent className="custom-card-content">
+        {/* <CardContent className="custom-card-content">
         {Array.isArray(content) ? (
     content.map((paragraph, index) => (
       <p key={index}>{replacePlaceholders( paragraph)}</p>
@@ -150,8 +151,20 @@ interface ModulePageProps {
   ) : (
     <p>{replacePlaceholders( content)}</p> // Handle single string case
   )}
-          {/* <p>{content}</p> */}
-        </CardContent>
+        </CardContent> */}
+              <CardContent className="custom-card-content">
+        {typeof content === 'string' ? (
+          Array.isArray(content) ? (
+            content.map((paragraph, index) => (
+              <p key={index}>{replacePlaceholders(paragraph)}</p>
+            ))
+          ) : (
+            <p>{replacePlaceholders(content)}</p>
+          )
+        ) : (
+          content 
+        )}
+      </CardContent>
         <div className="flex justify-between mt-4">
       <Button 
           onClick={onPreviousPage}

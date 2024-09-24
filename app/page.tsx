@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; 
 import { useState, useEffect } from 'react';
 import { useUser } from "@clerk/nextjs";
+import ZoomOutExercise from './zoomout';
 // import { getOrCreateUser } from './utils/user';
 
 export const dynamic = "force-dynamic";
@@ -47,6 +48,11 @@ const modules = [
         title: "Exercise: Linguistic self-distancing",
         subtitle: "Next time you face a challenge, ask yourself advice using your name:",
         content: " {{userName}}, what are three possible solutions to this problem?Notice how this shifts your perspective and potentially reduces emotional charge."
+      },
+      {
+        title: "Zoom Out",
+        subtitle: "Gain perspective by zooming out",
+        content: <ZoomOutExercise />
       }
     ]
   }
