@@ -4,16 +4,27 @@
 import './globals.css';
 import ModulePage from './modules/ModulePage';
 import { SignIn } from "@clerk/nextjs";
-import { Brain } from "lucide-react";
+// import { Brain } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; 
 import { useState, useEffect } from 'react';
 import { useUser } from "@clerk/nextjs";
+// import { getOrCreateUser } from './utils/user';
 
 export const dynamic = "force-dynamic";
+
+
+interface UserProfile {
+  id: string;
+  username: string;
+  phone_number: string;
+}
 
 const modules = [
   {
     name: "Distanced Self-Talk",
-    icon: <Brain className="h-6 w-6" />,
+    // icon: <Brain className="h-6 w-6" />,
+    icon: <FontAwesomeIcon icon={faPersonWalking} className="h-6 w-6"/>,
     pages: [
       {
         title: "How changing your perspective in self-talk can improve your mental health.",
@@ -48,37 +59,64 @@ export default function Home()  {
   const [currentModuleIndex, setCurrentModuleIndex] = useState(0);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showModuleCompleted, setShowModuleCompleted] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
 
   useEffect(() => {
     if (isSignedIn) {
       setShowWelcome(true);
+      fetchUserProfile();
     }
   }, [isSignedIn]);
-  useEffect(() => {
-    // Check if we've reached the last page of the current module
-    if (currentPageIndex === modules[currentModuleIndex].pages.length - 1) {
-      setShowModuleCompleted(true);
-    } else {
-      setShowModuleCompleted(false);
-    }
-  }, [currentPageIndex, currentModuleIndex]);
+  // useEffect(() => {
+  //   // Check if we've reached the last page of the current module
+  //   if (currentPageIndex === modules[currentModuleIndex].pages.length - 1) {
+  //     setShowModuleCompleted(true);
+  //   } else {
+  //     setShowModuleCompleted(false);
+  //   }
+  // }, [currentPageIndex, currentModuleIndex]);
 
+
+
+  const fetchUserProfile = async () => {
+    try {
+      console.log('Fetching user profile...');
+      const response = await fetch('/api/user');
+          console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API error:', errorData);
+        throw new Error(errorData.error ||'Failed to fetch user profile');
+      }
+      const profile = await response.json();
+      console.log('Fetched profile:', profile);
+      setUserProfile(profile);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
 
   const currentModule = modules[currentModuleIndex];
   const currentPage = currentModule.pages[currentPageIndex];
-
-
   const progress = ((currentPageIndex + 1) / currentModule.pages.length) * 100;
-
-
 
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
 
+  // const handleNextPage = () => {
+  //   if (currentPageIndex < currentModule.pages.length - 1) {
+  //     setCurrentPageIndex(currentPageIndex + 1);
+  //   }
+  // };
+
   const handleNextPage = () => {
     if (currentPageIndex < currentModule.pages.length - 1) {
       setCurrentPageIndex(currentPageIndex + 1);
+    } else {
+      setShowModuleCompleted(true);
     }
   };
 
@@ -94,6 +132,13 @@ export default function Home()  {
       setCurrentPageIndex(0);
       setShowModuleCompleted(false);
     }
+  };
+
+  const handleStartOver = () => {
+    setCurrentModuleIndex(0);
+    setCurrentPageIndex(0);
+    setShowModuleCompleted(false);
+    setShowWelcome(true);
   };
 
   const isFirstPage = currentPageIndex === 0;
@@ -128,6 +173,8 @@ export default function Home()  {
           showModuleCompleted={showModuleCompleted}
           onNextModule={handleNextModule}
             isLastModule={isLastModule}
+            onStartOver={handleStartOver}
+            username={userProfile?.username || ''}
         
         />)
       }

@@ -110,6 +110,13 @@ body {
   font-weight: bold;
 }
 
+.custom-start {
+  background-color: #D6D0FD !important; 
+  color: white !important; 
+  border-radius: 6px !important; 
+  padding: 0.025rem 0.5rem !important; 
+}
+
 .custom-button {
   background-color: #D6D0FD !important; 
   color: white !important; 

@@ -25,16 +25,32 @@ interface ModulePageProps {
     showModuleCompleted: boolean;
     onNextModule: () => void;
   isLastModule: boolean;
+  onStartOver: () => void;
+  username: string;
+
 }
 
-const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subtitle, content,  showWelcome,
+// const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subtitle, content,  showWelcome,
+//     setShowWelcome, onNextPage,
+//     isLastPage, onPreviousPage,
+//     isFirstPage,
+//     progress,
+//     showModuleCompleted,
+//     onNextModule,
+//     isLastModule}) => {
+  const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subtitle, content,  showWelcome,
     setShowWelcome, onNextPage,
-    isLastPage, onPreviousPage,
+    onPreviousPage,
     isFirstPage,
     progress,
     showModuleCompleted,
     onNextModule,
-    isLastModule}) => {
+    isLastModule,
+    onStartOver, username }) => {
+    
+      const replacePlaceholders = (text: string) => {
+        return text.replace(/{{userName}}/g, username || 'User');
+      };
 //   const [currentPage, setCurrentPage] = useState(0);
 //   const [showPopup, setShowPopup] = useState(true);
 
@@ -60,16 +76,16 @@ const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subt
   // };
 
   return (
-    <div className="flex flex-col min-h-screen p-1">
-      <Dialog open={showWelcome} onOpenChange={setShowWelcome}>
-        <DialogContent>
+    <div className="flex flex-col min-h-screen p-1 !border-0 !mb-0">
+      <Dialog open={showWelcome} onOpenChange={setShowWelcome} >
+        <DialogContent  >
           <DialogHeader>
-            <DialogTitle>Your Program is ready!</DialogTitle>
+            <DialogTitle>Your Program is ready !</DialogTitle>
             <DialogDescription>
-              Just a few modules a day can change your life
+             Litle steps to change your life
             </DialogDescription>
           </DialogHeader>
-          <Button  className='custom-button ' onClick={() => setShowWelcome(false)}>Get Started</Button>
+          <Button  className='custom-start w-40 mx-auto' size="sm" onClick={() => setShowWelcome(false)}>Start</Button>
         </DialogContent>
           </Dialog>
           
@@ -78,19 +94,18 @@ const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subt
           <DialogHeader>
             <DialogTitle>Module Completed!</DialogTitle>
             <DialogDescription>
-              Congratulations on completing this module!
+              Congratulations !
             </DialogDescription>
           </DialogHeader>
           {!isLastModule ? (
-            <Button onClick={onNextModule}>Go to Next Module</Button>
+            <Button className='custom-start w-40 mx-auto' size="sm" onClick={onNextModule}>Next Module</Button>
           ) : (
-            <Button onClick={() => {}}>Finish Course</Button>
+            <Button className='custom-start w-40 mx-auto' size="sm" onClick={onStartOver}>Start Over</Button>
           )}
         </DialogContent>
       </Dialog>
 
-
-      <Card className="mb-3 p-4 b-0">
+      <Card className="min-h-screen mb-3 p-4 !border-0 !mb-0 rounded-none">
       {/* <div className="p-4"> */}
               <UserButton />
               {/* </div> */}
@@ -130,10 +145,10 @@ const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subt
         <CardContent className="custom-card-content">
         {Array.isArray(content) ? (
     content.map((paragraph, index) => (
-      <p key={index}>{paragraph}</p>
+      <p key={index}>{replacePlaceholders( paragraph)}</p>
     ))
   ) : (
-    <p>{content}</p> // Handle single string case
+    <p>{replacePlaceholders( content)}</p> // Handle single string case
   )}
           {/* <p>{content}</p> */}
         </CardContent>
@@ -150,7 +165,8 @@ const ModulePage: React.FC<ModulePageProps> = ({ module, moduleIcon, title, subt
         // className="self-end mt-4"
         onClick={onNextPage}
                   // disabled={isLastPage}
-            disabled={isLastPage || showModuleCompleted}
+            // disabled={isLastPage || showModuleCompleted}
+
             className="custom-button "
 
 
