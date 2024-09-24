@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js'
 import { auth, clerkClient } from '@clerk/nextjs/server';
 
+export const dynamic = 'force-dynamic';
+
 
 const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
