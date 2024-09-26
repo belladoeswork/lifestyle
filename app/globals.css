@@ -88,8 +88,6 @@ body {
 @layer base {
   html {
     font-family: var(--font-lexend-deca), system-ui, sans-serif;
-     /* ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  } */
   }
   
   body {
@@ -119,36 +117,6 @@ main {
   overflow-y: auto;
 }
 
-
-.custom-slider {
-  height: 8px;
-  margin-top: 12px;
-}
-
-.custom-slider [role="slider"] {
-  width: 24px;
-  height: 24px;
-  background-color: #FEECBA;
-  border: 2px solid white;
-  top: -8px;
-  z-index: 10;
-}
-
-.custom-slider [data-orientation="horizontal"] {
-  height: 8px;
-}
-
-.custom-slider [data-orientation="horizontal"] .slider-track {
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
-  border-radius: 9999px;
-}
-
-.custom-slider [data-orientation="horizontal"] .slider-range {
-  background-color: transparent;
-  height: 100%;
-}
 
 
 .custom-start {

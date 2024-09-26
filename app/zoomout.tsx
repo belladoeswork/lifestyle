@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Slider } from "@/components/ui/slider"
+ import { Slider } from "@/components/ui/slider"
 import { PersonStanding, Users, Plane, Trees } from 'lucide-react';
+// import {Slider} from "@nextui-org/react";
+
 
 const ZoomOutExercise = () => {
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -82,13 +84,9 @@ const ZoomOutExercise = () => {
                     key={stop} 
                     className={`bg-white border-2 rounded-full ${sliderValue >= stop ? 'border-yellow-300 bg-yellow-300' : 'border-yellow-200'}`}
                     style={{
-                    //   width: `${12 + index * 4}px`,
-                    //   height: `${12 + index * 4}px`,
-                        //   marginTop: `-${(index * 2)}px`
-                        
-                        width: index === 0 ? '20px' : `${12 + index * 4}px`,
-                        height: index === 0 ? '20px' : `${12 + index * 4}px`,
-                        marginTop: `-${(index * 2)}px`
+                      width: `${12 + index * 4}px`,
+                      height: `${12 + index * 4}px`,
+                      marginTop: `-${(index * 2)}px`
                     }}
                   />
                 ))}

@@ -10,6 +10,7 @@ import { faPersonWalking } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { useUser } from "@clerk/nextjs";
 import ZoomOutExercise from './zoomout';
+import IconSlider from './iconslider';
 // import { getOrCreateUser } from './utils/user';
 
 export const dynamic = "force-dynamic";
@@ -53,6 +54,11 @@ const modules = [
         title: "Zoom Out",
         subtitle: "Gain perspective by zooming out",
         content: <ZoomOutExercise />
+      },
+            {
+        title: "Zoom Out",
+        subtitle: "Gain perspective by zooming out",
+        content: <IconSlider/>
       }
     ]
   }
