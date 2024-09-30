@@ -91,7 +91,7 @@
 //     }
 // }
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { getAuth, clerkClient } from '@clerk/nextjs/server';
 
@@ -111,7 +111,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
   }
 });
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     console.log('API route called');
     const { userId } = getAuth(req);
