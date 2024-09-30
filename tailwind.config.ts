@@ -15,7 +15,11 @@ const config: Config = {
 			sans: ['var(--font-lexend-deca)'],
 			lexendDeca: ['var(--font-lexend-deca)'],
 		  }, 
-  		colors: {
+		  colors: {
+			lightyellow: '#fdeab5',
+			darkyellow: '#FEECBA', 
+
+
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

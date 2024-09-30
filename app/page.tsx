@@ -1,17 +1,16 @@
 "use client";
 
-// import Image from "next/image";
 import './globals.css';
 import ModulePage from './modules/ModulePage';
 import { SignIn } from "@clerk/nextjs";
-// import { Brain } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonWalking } from '@fortawesome/free-solid-svg-icons'; 
 import { useState, useEffect } from 'react';
 import { useUser } from "@clerk/nextjs";
-import ZoomOutExercise from './zoomout';
 import IconSlider from './iconslider';
-// import { getOrCreateUser } from './utils/user';
+import { useSwipeable } from 'react-swipeable';
+
+
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +24,6 @@ interface UserProfile {
 const modules = [
   {
     name: "Distanced Self-Talk",
-    // icon: <Brain className="h-6 w-6" />,
     icon: <FontAwesomeIcon icon={faPersonWalking} className="h-6 w-6"/>,
     pages: [
       {
@@ -53,11 +51,6 @@ const modules = [
       {
         title: "Zoom Out",
         subtitle: "Gain perspective by zooming out",
-        content: <ZoomOutExercise />
-      },
-            {
-        title: "Zoom Out",
-        subtitle: "Gain perspective by zooming out",
         content: <IconSlider/>
       }
     ]
@@ -73,6 +66,29 @@ export default function Home()  {
   const [showModuleCompleted, setShowModuleCompleted] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
+
+  const handleNextPage = () => {
+    if (currentPageIndex < currentModule.pages.length - 1) {
+      setCurrentPageIndex(currentPageIndex + 1);
+      console.log('swiped right')
+    } else {
+      setShowModuleCompleted(true);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPageIndex > 0) {
+      setCurrentPageIndex(currentPageIndex - 1);
+      console.log('swiped left')
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleNextPage,
+    onSwipedRight: handlePreviousPage,
+    // preventDefault: true,
+    trackMouse: true,
+  });
 
   useEffect(() => {
     if (isSignedIn) {
@@ -124,20 +140,6 @@ export default function Home()  {
   //   }
   // };
 
-  const handleNextPage = () => {
-    if (currentPageIndex < currentModule.pages.length - 1) {
-      setCurrentPageIndex(currentPageIndex + 1);
-    } else {
-      setShowModuleCompleted(true);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPageIndex > 0) {
-      setCurrentPageIndex(currentPageIndex - 1);
-    }
-  };
-
   const handleNextModule = () => {
     if (currentModuleIndex < modules.length - 1) {
       setCurrentModuleIndex(currentModuleIndex + 1);
@@ -157,8 +159,12 @@ export default function Home()  {
   const isLastPage = currentPageIndex === currentModule.pages.length - 1;
   const isLastModule = currentModuleIndex === modules.length - 1;
 
+
+
+
+
   return (
-    <main className="min-h-screen w-full">
+    <main className="min-h-screen w-full" {...swipeHandlers}>
       {!isSignedIn ? (
         <div className="flex items-center justify-center h-screen">
           <SignIn routing="hash" />
@@ -188,7 +194,8 @@ export default function Home()  {
             onStartOver={handleStartOver}
             username={userProfile?.username || ''}
         
-        />)
+      />
+      )
       }
     </main>
   );

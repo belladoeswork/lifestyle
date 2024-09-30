@@ -95,9 +95,12 @@ body {
   }
 }
 
+.custom-slider .nextui-slider-filler {
+  background-color: #D4A017 !important;
+}
 
 .custom-icon {
-  background-color: #FEECBA !important; 
+  background-color: #feecba !important;   
   color: #2F3336 !important; 
   border-radius: 9px; 
   padding: 0.5rem 0.5rem; 
@@ -129,8 +132,23 @@ main {
 .custom-button {
   background-color: #D6D0FD !important; 
   color: white !important; 
-  border-radius: 99px; 
-  padding: 0.1rem 0.5rem; 
+  border-radius: 50%; 
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center; 
+  padding: 0; 
+  border: none; 
+  font-size: 1.5rem;
+  line-height: 0; 
+  cursor: pointer;
+}
+
+
+.custom-button svg {
+  height: 1.5rem; /* Adjust the size of the icon */
+  width: 1.5rem;  /* Ensure the width and height match */
 }
 
 .custom-cardtitle {

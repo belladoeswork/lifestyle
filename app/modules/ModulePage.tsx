@@ -14,7 +14,6 @@ interface ModulePageProps {
   moduleIcon: React.ReactNode;
   title: string;
   subtitle: string;
-  // content: string;
   showWelcome: boolean;
   setShowWelcome: (show: boolean) => void;
   onNextPage: () => void;
@@ -107,31 +106,22 @@ interface ModulePageProps {
       </Dialog>
 
       <Card className="min-h-screen mb-3 p-4 !border-0 !mb-0 rounded-none">
-      {/* <div className="p-4"> */}
-              <UserButton />
-              {/* </div> */}
         <CardHeader className="pb-9">
         <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
-
         <div className="flex items-center custom-icon  ml-1 mr-5">
             {moduleIcon}
             </div>
-              {/* <div className="ml-2"> */}
               <div>
-
-              <CardTitle className=" ml-4 custom-moduletitle pt-0">{module}</CardTitle>
-              {/* <CardTitle className=" ml-2 custom-moduletitle">Distance</CardTitle>
-              <CardTitle className=" ml-2 custom-moduletitle">Self-talk</CardTitle> */}
+                <CardTitle className=" ml-4 custom-moduletitle pt-0">{module}</CardTitle>
               </div>
-              </div>
-
+            </div>
+            <div className="ml-auto">
+      <UserButton />
+    </div>
           </div>
           <Progress value={progress} className="w-full custom-progress mb-6" />
         </CardHeader>
-      {/* </Card> */}
-
-      {/* <Card> */}
         <CardHeader className="pt-0">
           <CardTitle className=' custom-cardtitle'>{title}</CardTitle>
           {Array.isArray(subtitle) ? (
@@ -139,19 +129,9 @@ interface ModulePageProps {
       <p className="text-muted-foreground" key={index}>{paragraph}</p>
     ))
   ) : (
-    <p className="text-muted-foreground">{subtitle}</p> // single string case
+    <p className="text-muted-foreground">{subtitle}</p> 
   )}
-          {/* <p className="text-muted-foreground">{subtitle}</p> */}
         </CardHeader>
-        {/* <CardContent className="custom-card-content">
-        {Array.isArray(content) ? (
-    content.map((paragraph, index) => (
-      <p key={index}>{replacePlaceholders( paragraph)}</p>
-    ))
-  ) : (
-    <p>{replacePlaceholders( content)}</p> // Handle single string case
-  )}
-        </CardContent> */}
               <CardContent className="custom-card-content">
         {typeof content === 'string' ? (
           Array.isArray(content) ? (
@@ -169,46 +149,14 @@ interface ModulePageProps {
       <Button 
           onClick={onPreviousPage}
             disabled={isFirstPage}
-            className="custom-button"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          
+            className="custom-button">
+          <ArrowLeft />        
         </Button>
-      <Button 
-        // className="self-end mt-4"
-        onClick={onNextPage}
-                  // disabled={isLastPage}
-            // disabled={isLastPage || showModuleCompleted}
-
-            className="custom-button "
-
-
-      >
-              <ArrowRight className="mr-2 h-4 w-4" />
-              {/* {isLastPage ? "Completed" : "Next"} */}
+      <Button onClick={onNextPage} className="custom-button ">
+              <ArrowRight />
               </Button>
               </div>
       </Card>
-      {/* <div className="flex justify-between mt-4">
-      <Button 
-          onClick={onPreviousPage}
-          disabled={isFirstPage}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Previous
-        </Button>
-      <Button 
-        // className="self-end mt-4"
-        onClick={onNextPage}
-                  // disabled={isLastPage}
-                  disabled={isLastPage ||showModuleCompleted}
-
-      >
-              <ArrowRight className="mr-2 h-4 w-4" />
-              {/* {isLastPage ? "Completed" : "Next"} 
-      // }Next
-      //         </Button>
-      //         </div> */ }
     </div>
   );
 };

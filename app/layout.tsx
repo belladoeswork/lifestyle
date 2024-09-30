@@ -1,16 +1,9 @@
 import type { Metadata } from "next";
-// import { Lexend_Deca } from "next/font/google";
 import localFont from "next/font/local";
 
 import "./globals.css";
 import { ClerkProvider, SignedOut, SignedIn } from '@clerk/nextjs';
 
-
-// const lexendDeca = Lexend_Deca({ 
-//   subsets: ["latin"],
-//   variable: "--font-lexend-deca",
-//   display: "swap",
-// });
 const lexendDeca = localFont({
   src: [
     {
@@ -49,9 +42,6 @@ export default function RootLayout({
         <body className="font-sans" >
           <main className="min-h-screen bg-white text-[#2F3336]">
             <SignedIn>
-            {/* <div className="p-4">
-              <UserButton />
-              </div> */}
               {children}
             </SignedIn>
             <SignedOut>
