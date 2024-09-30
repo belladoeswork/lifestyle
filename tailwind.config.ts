@@ -16,10 +16,6 @@ const config: Config = {
 			lexendDeca: ['var(--font-lexend-deca)'],
 		  }, 
 		  colors: {
-			lightyellow: '#fdeab5',
-			darkyellow: '#FEECBA', 
-
-
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -90,6 +86,22 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate"),nextui()],
+	plugins: [
+		require("tailwindcss-animate"),
+		nextui({
+			themes: {
+			  light: {
+				colors: {
+				  warning: "#FEECBA",
+				},
+			  },
+			  dark: {
+				colors: {
+				  warning: "#FEECBA",
+				},
+			  },
+			},
+		  })
+	],
 };
 export default config;

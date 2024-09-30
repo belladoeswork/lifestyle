@@ -159,10 +159,6 @@ export default function Home()  {
   const isLastPage = currentPageIndex === currentModule.pages.length - 1;
   const isLastModule = currentModuleIndex === modules.length - 1;
 
-
-
-
-
   return (
     <main className="min-h-screen w-full" {...swipeHandlers}>
       {!isSignedIn ? (

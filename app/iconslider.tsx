@@ -16,6 +16,7 @@ const IconSlider = () => {
     75: ['🙎', '🧑‍🤝‍🧑', '✈️', '🌳'],
   };
 
+
   const visibleIcons = iconsMap[sliderValue] || [];
 
   return (
@@ -29,9 +30,9 @@ const IconSlider = () => {
       </div>
       <div className="h-64 flex items-center ml-4">
           <Slider
-            step={25} 
-            maxValue={75} 
-            minValue={0} 
+            step={25}
+            maxValue={75}
+            minValue={0}
             defaultValue={0}
             orientation="vertical"
             showSteps={true}
@@ -39,20 +40,20 @@ const IconSlider = () => {
             showOutline={true}
             disableThumbScale={true}
             value={sliderValue}
-            onChange={handleSliderChange}    
-          className="max-w-md" 
-          color="#FEECBA"
+            onChange={handleSliderChange}
+            className="max-w-md"
+          color="warning"
 
 
             classNames={{
               base: "w-2 relative z-10",
-              track: " !bg-[#FEECBA]",
-              filler: "!bg-[#FEECBA] rounded-full",
+              track: " !bg-[#FEECBA] h-full rounded-full",
+              filler: "!bg-[#FEECBA] h-full rounded-full",
               thumb: "w-6 h-6 !bg-[#FEECBA] shadow-md",
               step: "data-[in-range=true]:!bg-[#FEECBA]",
               mark: "hidden"
             }}
-        />
+          />
         </div>
     </div>
   );
