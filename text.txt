@@ -1,0 +1,24 @@
+changes - float the buttons to the bottom
+- reduce white space at the top
+- bigger buttons
+
+- for the swipe, make it smoother - transition between pages
+
+
+
+Awesome work Alina! Great job using the if-else statements, and the loops.
+
+Minor suggestions:
+
+it's okay to write in one line  text_two = int(input("Enter the second number: "))
+
+instead of 2 lines: text_two = input("Enter the second number: ")
+number_two = int(text_two)
+
+some variable naming could be improve as to not confuse the person reading your code. e.g. if the "input" requested from the user is a number, it's better to name the variable accordingly. number_one = input("Enter a number: ")
+as text_one = input("Enter a number: ")
+could be confusing.
+
+for the division (division_result = number_one / number_two), it would have been perfect to check that number_two is not 0 - because a number cannot be divided by 0.
+
+
