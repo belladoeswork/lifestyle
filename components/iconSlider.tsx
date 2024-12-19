@@ -1,70 +1,3 @@
-// import { useState } from "react";
-// import { Slider } from "@nextui-org/react";
-
-// const IconSlider = () => {
-//   const [sliderValue, setSliderValue] = useState(0);
-
-//   const handleSliderChange = (value: number | number[]) => {
-//     setSliderValue(Array.isArray(value) ? value[0] : value);
-//   };
-
-//   const iconsMap: Record<number, string[]> = {
-//     0: ["🙎"],
-//     25: ["🙎", "🧑‍🤝‍🧑"],
-//     50: ["🙎", "🧑‍🤝‍🧑", "✈️"],
-//     75: ["🙎", "🧑‍🤝‍🧑", "✈️", "🌳"],
-//   };
-
-//   const visibleIcons = iconsMap[sliderValue] || [];
-
-//   return (
-//     <div className="flex items-center justify-center w-full mb-8">
-//       <div className="w-64 h-64 p-4 overflow-auto flex flex-wrap items-center justify-center">
-//         {visibleIcons.map((icon: string, index: number) => (
-//           <div
-//             key={index}
-//             className={`mx-2 ${
-//               index === visibleIcons.length - 1 ? "text-9xl" : "text-3xl"
-//             } transition-all duration-500 ease-in-out`}
-//           >
-//             {icon}
-//           </div>
-//         ))}
-//       </div>
-//       <div className="h-64 flex items-center ml-4">
-//         <Slider
-//           step={25}
-//           maxValue={75}
-//           minValue={0}
-//           defaultValue={0}
-//           orientation="vertical"
-//           showSteps={true}
-//           showTooltip={false}
-//           showOutline={true}
-//           disableThumbScale={true}
-//           value={sliderValue}
-//           onChange={handleSliderChange}
-//           className="max-w-md"
-//           color="warning"
-//           classNames={{
-//             base: "w-2 relative z-10",
-//             track: " !bg-[#FEECBA] h-full rounded-full",
-//             filler: "!bg-[#FEECBA] h-full rounded-full",
-//             thumb: "w-6 h-6 !bg-[#FEECBA] shadow-md",
-//             step: "data-[in-range=true]:!bg-[#FEECBA]",
-//             mark: "hidden",
-//           }}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default IconSlider;
-
-
-
-
 import React, { useState} from "react";
 import { useRive, Layout, Fit, Alignment} from "@rive-app/react-canvas";
 import { Input } from "@/components/ui/input";
@@ -79,7 +12,7 @@ const IconSlider = () => {
   const TEXT_RUNS = ['user_input1', 'user_input2', 'user_input3', 'user_input4'];
 
   const { rive, RiveComponent } = useRive({
-    src: "/animations/z38_slider_backup2.riv",
+    src: "/animations/z38_slider2.riv",
     artboard: "Artboard",
     stateMachines: "State Machine 1",
     layout: new Layout({
@@ -87,49 +20,69 @@ const IconSlider = () => {
       alignment: Alignment.Center
     }),
     autoplay: true,
-    onStateChange: (event) => {
-      if (userText) {
+    onStateChange: (event: any) => {
+      console.log('State changed:', event);
+      if (event.data?.state === 'Click_1' || event.data?.state === 'Click_2') {
         updateAllTextRuns(userText);
       }
-    },
+    }
   });
 
   const updateAllTextRuns = (text: string) => {
     if (!rive) return;
+    console.log('Attempting to update text with:', text);
 
     TEXT_RUNS.forEach((runName) => {
       try {
-        rive.setTextRunValueAtPath(
-          runName,
-          text,
-          "Slider_Artboard"
-        );
-      } catch (error) {
-        console.error(`Failed to update ${runName}:`, error);
+        console.log(`Trying to update ${runName}`);
+        rive.setTextRunValue(runName, text);
+        console.log(`Direct update succeeded for ${runName}`);
+      } catch (directError) {
         try {
-          rive.setTextRunValue(runName, text);
-        } catch (fallbackError) {
-          console.error(`Fallback update failed for ${runName}:`, fallbackError);
+          rive.setTextRunValueAtPath(runName, text, "Slider_Artboard");
+          console.log(`Path update succeeded for ${runName}`);
+        } catch (pathError) {
+          console.error(`All updates failed for ${runName}:`, { directError, pathError });
         }
       }
     });
   };
 
-  // input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newText = e.target.value;
-    setUserText(newText);
-  };
-
-  // submit
+  // Handle submit
   const handleSubmit = () => {
-    if (userText.trim()) {
+    if (!userText.trim()) return;
+    
+    console.log('Submit clicked with text:', userText);
+    
+    try {
+      // Try immediate text update first
       updateAllTextRuns(userText);
+      
+      // Then trigger state machine
+      if (rive) {
+        const inputs = rive.stateMachineInputs("State Machine 1");
+        console.log('Available inputs:', inputs);
+        
+        const clickInput = inputs.find(i => i.name === "Click_1" || i.name === "Click_2");
+        if (clickInput) {
+          clickInput.fire();
+          console.log('Fired click input:', clickInput.name);
+        } else {
+          console.log('No click input found');
+        }
+      }
+      
       setUserText("");
       setShowInput(false);
+    } catch (error) {
+      console.error('Submit error:', error);
     }
   };
 
+  // Handle input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserText(e.target.value);
+  };
 
   return (
     <div className="relative w-full h-[60vh] flex  flex-col">
@@ -169,5 +122,3 @@ const IconSlider = () => {
 };
 
 export default IconSlider;
-
-
